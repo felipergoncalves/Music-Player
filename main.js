@@ -2,19 +2,19 @@ let songs = [
     {
         titulo: "Sweet Child O' Mine",
         artista: "Guns N' Roses",
-        src:"./musics/Guns N' Roses - Sweet Child O' Mine (Official Music Video).mp4",
+        src:"./songs/Guns N' Roses - Sweet Child O' Mine (Official Music Video).mp4",
         img:"./images/rock.jpg"
     },
     {
         titulo: "Je te laisserai des mots",
         artista: "Patrick Watson",
-        src:"./musics/Je Te Laisserai Des Mots - Patrick Watson (Piano Cover).mp4",
+        src:"./songs/Je Te Laisserai Des Mots - Patrick Watson (Piano Cover).mp4",
         img:"./images/piano.jpg"
     },
     {
         titulo: "Faça dinheiro, se mantenha vivo",
         artista: "LEALL",
-        src:"./musics/LEALL “Faça Dinheiro, Se Mantenha Vivo”.mp4",
+        src:"./songs/LEALL “Faça Dinheiro, Se Mantenha Vivo”.mp4",
         img:"./images/rap.jpg"
     }
 ]
@@ -34,7 +34,7 @@ let volumeTimer = null;
 
 renderizarMusica(indexMusica)//chamando a função no começo para não carregar a primeira vez do site com os textos estáticos do html
 
-//eventos
+//Eventos
 favorite.addEventListener('click', () => {
     favorite.classList.toggle('favorite')
 })
@@ -64,7 +64,7 @@ document.querySelector('.proxima').addEventListener('click', () => {
     renderizarMusica(indexMusica)
 })
 
-//funções
+//Funções
 function renderizarMusica(index){
     song.setAttribute('src', songs[index].src)
     song.addEventListener('loadeddata', () => {
@@ -78,6 +78,7 @@ function renderizarMusica(index){
     })
     favorite.classList.remove('favorite')
 }
+
 
 function handleVolume(isTurnUp) {
     volume.style.display = 'block'
@@ -123,6 +124,7 @@ function playSong(){
     setInterval(nextSong, 1)
 }
 
+
 function atualizarBarraVolume(){
     let barraVolume = document.getElementById('progress-volume')
     barraVolume.style.height = Math.floor(song.volume * 100) + '%'
@@ -160,7 +162,6 @@ function avancarTempo(){
 function diminuirTempo(){
     song.currentTime = song.currentTime - 5
 }
-
 function pauseSong(){
     song.pause()
     document.querySelector('.botao-pause').style.display = 'none'
