@@ -35,9 +35,34 @@ let volumeTimer = null;
 renderizarMusica(indexMusica)//chamando a função no começo para não carregar a primeira vez do site com os textos estáticos do html
 
 //eventos
+favorite.addEventListener('click', () => {
+    favorite.classList.toggle('favorite')
+})
+
 document.querySelector('.botao-play').addEventListener('click', playSong)
 
 document.querySelector('.botao-pause').addEventListener('click', pauseSong)
+
+song.addEventListener('timeupdate', atualizarBarra)
+
+song.addEventListener('timeupdate', atualizarBarraVolume)
+
+
+document.querySelector('.anterior').addEventListener('click', () => {
+    indexMusica--
+    if(indexMusica < 0){
+        indexMusica = 2
+    }
+    renderizarMusica(indexMusica)
+})
+
+document.querySelector('.proxima').addEventListener('click', () => {
+    indexMusica++
+    if(indexMusica > 2){
+        indexMusica = 0
+    }
+    renderizarMusica(indexMusica)
+})
 
 //funções
 function renderizarMusica(index){
@@ -52,6 +77,22 @@ function renderizarMusica(index){
         playSong()
     })
     favorite.classList.remove('favorite')
+}
+
+function handleVolume(isTurnUp) {
+    volume.style.display = 'block'
+    
+    clearTimeout(volumeTimer)
+
+    if(isTurnUp){
+        song.volume = song.volume + 0.1
+    } else {
+        song.volume = song.volume - 0.1
+    }
+
+    volumeTimer = setTimeout(function(){
+        volume.style.display = 'none'
+    }, 3000)
 }
 
 function playSong(){
@@ -80,6 +121,44 @@ function playSong(){
 
 
     setInterval(nextSong, 1)
+}
+
+function atualizarBarraVolume(){
+    let barraVolume = document.getElementById('progress-volume')
+    barraVolume.style.height = Math.floor(song.volume * 100) + '%'
+    if(song.volume < 0.01){
+        volumeMuted.style.display = 'block'
+        volumeMedium.style.display = 'none'
+        volumeHigh.style.display = 'none'
+    }
+    if(song.volume >= 0.01 && song.volume < 0.5){
+        volumeMuted.style.display = 'none'
+        volumeMedium.style.display = 'block'
+        volumeHigh.style.display = 'none'
+    }
+    if(song.volume >= 0.5){
+        volumeMedium.style.display = 'none'     
+        volumeHigh.style.display = 'block'
+        volumeMuted.style.display = 'none'     
+    }
+}
+
+function nextSong(){
+    if(song.currentTime == song.duration){
+    indexMusica++
+    if(indexMusica > 2){
+        pauseSong()
+    }
+    renderizarMusica(indexMusica)
+    }
+}
+
+function avancarTempo(){
+    song.currentTime = song.currentTime + 5
+}
+
+function diminuirTempo(){
+    song.currentTime = song.currentTime - 5
 }
 
 function pauseSong(){
