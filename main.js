@@ -18,6 +18,21 @@ let songs = [
         img:"./images/rap.jpg"
     }
 ]
+const favorite = document.getElementById('favorite')
+const remove = document.getElementById('remove')
+let song = document.querySelector('audio')
+let indexMusica = 0
+let duracaoMusica = document.querySelector('.fim')
+let imagem = document.querySelector('img')
+let nomeDaMusica = document.querySelector('.descricao h2')
+let nomeArtista = document.querySelector('.descricao small')
+let volume = document.querySelector('.volume-main')
+let volumeMuted = document.querySelector('.muted')
+let volumeMedium = document.querySelector('.medium')
+let volumeHigh = document.querySelector('.high')
+let volumeTimer = null;
+
+renderizarMusica(indexMusica)//chamando a função no começo para não carregar a primeira vez do site com os textos estáticos do html
 
 //eventos
 document.querySelector('.botao-play').addEventListener('click', playSong)
@@ -25,6 +40,20 @@ document.querySelector('.botao-play').addEventListener('click', playSong)
 document.querySelector('.botao-pause').addEventListener('click', pauseSong)
 
 //funções
+function renderizarMusica(index){
+    song.setAttribute('src', songs[index].src)
+    song.addEventListener('loadeddata', () => {
+        let barra = document.getElementById('progress-song')
+        nomeDaMusica.textContent = songs[index].titulo
+        nomeArtista.textContent = songs[index].artista
+        imagem.src = songs[index].img
+        duracaoMusica.textContent = segundosParaMinutos(Math.floor(song.duration))
+        barra.style.width = '0%'
+        playSong()
+    })
+    favorite.classList.remove('favorite')
+}
+
 function playSong(){
     song.play()
     
